@@ -1,12 +1,26 @@
-const http = require('http');
+const connect = require('connect');
+const app= connect();
 
-http.createServer(
-    (req, res) => {
-    res.writeHead(200, {'content-Type': 'text/html'});
-    res.end('<h2> Hello World </h2>');
+// logger middleware
+
+function logger(req, res, next) {
+    console.log(req.method, req.url); 
+    next();
 }
-).listen(3000);
 
+function goobyWorld(req, res, next){
+    res.setheader('content-Type', 'text/plain');
+    res.end('Goodbye World'); 
+}
 
+function helloworld(req, res, next) {
+    res.setheader('content-Type', 'text/plain');
+    res.end('Hello World'); 
+}
 
-console.log('Server running at http://localhost:3000');
+app.use(logger);
+app.use('/hello', helloworld);
+
+app.listen(3000); 
+
+console.log('server running at http://localhost:3000');
